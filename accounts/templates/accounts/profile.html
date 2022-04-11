@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="text-center">{{ user.username }}</h2>
+    {% if user.id == request.user.id %}
+        <a href="{% url 'home:post_create' %}" class="btn btn-success m-5">ایجاد پست جدید</a>
+        <a href="{% url 'accounts:edit_user' %}" class="btn btn-info">تغییر پروفایل</a>
+    {% else %}
+        {% if not_user %}
+            <a class="btn btn-primary" href="{% url 'accounts:user_follow' user.id %}">دنبال کردن</a>
+        {% else %}
+            <a class="btn btn-primary" href="{% url 'accounts:user_unfollow' user.id %}">حذف از دنبال کنندگان</a>
+        {% endif %}
+    {% endif %}
+    <div class="card">
+        {% for post in posts %}
+            <a href="{{ post.get_absolute_url }}"
+               class="card-body">{{ post.body|truncatewords:8 }}</a>
+        {% endfor %}
+    </div>
+{% endblock %}
